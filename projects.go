@@ -254,6 +254,21 @@ func (s *ProjectsService) ListProjects(opt *ListProjectsOptions, options ...Requ
 	return p, resp, err
 }
 
+func (s *ProjectsService) ListProjectsForNamespace(namespace *Namespace, opt *ListProjectsOptions, options ...RequestOptionFunc) ([]*Project, *Response, error) {
+	req, err := s.client.NewRequest("GET", "groups/"+namespace.Path+"/projects", opt, options)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var p []*Project
+	resp, err := s.client.Do(req, &p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, err
+}
+
 // ListUserProjects gets a list of projects for the given user.
 //
 // GitLab API docs:
